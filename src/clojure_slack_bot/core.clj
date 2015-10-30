@@ -5,10 +5,8 @@
              [core :as slack]
              [team-state :as state]
              [web :as web]]))
+(use 'clojure.string)
 
-
-(def api :xoxb-13491383985-dyqhP898bcZLvTgrAbnEQdFa)
-(def https "https://hooks.slack.com/services/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")
 
 
 
@@ -46,9 +44,12 @@
                        })}}))
 
 (defn niklas988-sing [coll]
-  (recur [coll coll]
+  (loop [coll coll]
          (if (empty? coll)
            true
-           (do (send-slack-niklas988
-                https (first coll))
-               ( [](rest coll))))))
+           (do (do  (send-slack-niklas988
+                       https (first coll))
+                    (Thread/sleep 2000))
+               (recur (rest coll))))))
+
+(def song (remove empty? (split-lines (slurp "resources/niklas.txt"))))
